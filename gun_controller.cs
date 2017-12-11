@@ -71,7 +71,7 @@ public class gun_controller : MonoBehaviour {
 		}
 	}
 	public int currentDamage(){
-		return allGuns[currentIndex].getdamage ();
+		return allGuns [currentIndex].getdamage ();
 	}
 
 }

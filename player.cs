@@ -76,7 +76,7 @@ public class player : LivingEntity {
 		}
 		if (Input.GetKeyDown (KeyCode.F)) {
 			adddamage (1);
-			Debug.Log (gunController.currentDamage());
+			Debug.Log ("current damage:"+gunController.currentDamage());
 		}
 
 
