@@ -16,8 +16,8 @@ public class Enemy : LivingEntity {
 
 	NavMeshAgent pathfinder;
 	Transform target;
-	Light harmlight;
-	float attackDistanceThreshold = 0.5f;
+	Animator m_animater;
+	float attackDistanceThreshold = 2f;
 	float timebetweenAttcks = 1;
 	float nextAttackTime;
 
@@ -32,24 +32,13 @@ public class Enemy : LivingEntity {
 	public override void Start () {
 		base.Start ();
 		pathfinder = GetComponent<NavMeshAgent> ();
+		pathfinder.enabled = false;
+		pathfinder.Warp(transform.position);
+		m_animater = GetComponent<Animator> ();
+		currentState = State.Idle;
 		target = GameObject.FindGameObjectWithTag ("Player").transform;
-		if (GameObject.FindGameObjectWithTag ("Player")) {
-			hasTarget = true;
-			pathfinder.enabled = false;
 
-			pathfinder.Warp(transform.position);
-			currentState = State.Chasing;
 
-			harmlight = transform.GetComponentInChildren<Light>();
-			harmlight.enabled = false;
-			targetEntity = target.GetComponent<LivingEntity> ();
-			targetEntity.OnDeath += OnTargetDeath;
-
-			//Subject To CHANGE!!!!!!!
-			myCollisionRadius = GetComponent<CapsuleCollider> ().radius;
-			targetCollisionRadius = target.GetComponent<CapsuleCollider> ().radius;
-			StartCoroutine (UpdatePath ());
-		}
 
 
 
@@ -61,6 +50,25 @@ public class Enemy : LivingEntity {
 
 	}
 
+	void OnTriggerStay(Collider col){
+		if(col.CompareTag("Player")){
+			pathfinder.enabled = true;
+
+			hasTarget = true;
+			m_animater.SetBool ("run",true);
+			currentState = State.Chasing;
+
+
+			targetEntity = target.GetComponent<LivingEntity> ();
+			targetEntity.OnDeath += OnTargetDeath;
+
+			//Subject To CHANGE!!!!!!!
+			myCollisionRadius = GetComponent<CapsuleCollider> ().radius;
+			targetCollisionRadius = target.GetComponent<CapsuleCollider> ().radius;
+			StartCoroutine (UpdatePath ());
+		}
+	}
+
 
 	public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDir){
 
@@ -69,16 +77,11 @@ public class Enemy : LivingEntity {
 		}
 
 		base.TakeHit ( damage, hitPoint,hitDir);
-		harmlight.enabled = true;
-		StartCoroutine (turnofflight ());
+
+
 
 	}
 
-	IEnumerator turnofflight(){
-		
-		yield return new WaitForSeconds (2);
-		harmlight.enabled = false;
-	}
 
 
 
@@ -110,6 +113,7 @@ public class Enemy : LivingEntity {
 		bool hasAppliedDamage = false;
 		float attackspeed = 1;
 		float percent = 0;
+		m_animater.SetTrigger ("attack");
 		while (percent <= 1) {
 			if (percent >= 0.5f && !hasAppliedDamage) {
 				hasAppliedDamage = true;

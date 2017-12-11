@@ -10,7 +10,7 @@ public class player : LivingEntity {
 	public Image energybar;
 	public Text healthtext;
 	public Text energytext;
-
+	public event System.Action OnDeath;
 
 	public float initialSpeed=5;
 	public float moveSpeed = 5;
