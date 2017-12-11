@@ -74,6 +74,11 @@ public class player : LivingEntity {
 		if (Input.GetKeyDown (KeyCode.Q)) {
 			gunController.nextGun ();
 		}
+		if (Input.GetKeyDown (KeyCode.F)) {
+			adddamage (1);
+			Debug.Log (gunController.currentDamage());
+		}
+
 
 	}
 
@@ -108,11 +113,11 @@ public class player : LivingEntity {
 	}
 
 	public void adddamage(int adddamage){
-		
+		gunController.adddamage (adddamage);
 	}
 
 	public void addweapon(gun newgun){
-		
+		gunController.addweapon (newgun);
 	}
 
 

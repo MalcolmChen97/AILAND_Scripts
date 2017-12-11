@@ -10,7 +10,7 @@ public class gun : MonoBehaviour {
 	public int burstCount;
 	int shotsRemainingInBurst;
 	public Transform[] projectileSpawn;
-
+	int damagenow;
 	public Transform muzzle;
 	public Projectile projectile;
 	public float msBetweenshots = 100;
@@ -40,10 +40,18 @@ public class gun : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		muzzleflash = GetComponent<MuzzleFlash> ();
+		damagenow = projectile.getInitialdamage();
+		Debug.Log ("starting damage"+damagenow);
+
 		shotsRemainingInBurst = burstCount;
 		projectilesRemainingInMag = projectileperMag;
 	}
-	
+
+	public int getdamage(){
+		return damagenow;
+	}
+
+
 	// Update is called once per frame
 	void LateUpdate () {
 		//animate recoil
@@ -86,6 +94,7 @@ public class gun : MonoBehaviour {
 				nextShotTime = Time.time + msBetweenshots / 1000;
 				Projectile newProjectile = Instantiate (projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile;
 				newProjectile.setSpeed (muzzleVelocity);
+				projectile.setdamage (damagenow);
 
 			}
 			Instantiate (shell, shellEjection.position, shellEjection.rotation);
@@ -139,6 +148,11 @@ public class gun : MonoBehaviour {
 		triggerRelaeasedSinceLastShot = true;
 	}
 
+	public void adddamage(int damage){
+		Debug.Log ("before: I am gun, my damage is:"+damagenow);
+		damagenow += damage;
 
+		Debug.Log ("after : I am gun, my damage is:"+damagenow);
+	}
 
 }

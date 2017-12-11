@@ -6,9 +6,10 @@ public class gun_controller : MonoBehaviour {
 	gun equippedGun;
 	public Transform weaponhold;
 
-	public gun[] allGuns;
+	public gun[] allGuns=new gun[10];
 	public int startingGunIndex =0;
-	int currentIndex;
+	public int currentIndex;
+	int numberofgun=1;
 	void Start(){
 		currentIndex = startingGunIndex;
 		if (allGuns != null) {
@@ -26,7 +27,7 @@ public class gun_controller : MonoBehaviour {
 
 	public void nextGun(){
 		currentIndex++;
-		if (currentIndex == allGuns.Length) {
+		if (currentIndex == numberofgun) {
 			currentIndex = 0;
 		}
 		EquipGun (allGuns [currentIndex]);
@@ -59,7 +60,18 @@ public class gun_controller : MonoBehaviour {
 		}
 	}
 
+	public void addweapon(gun newgun){
+		allGuns [numberofgun] = newgun;
+		numberofgun++;
+	}
 
-
+	public void adddamage(int damage){
+		for (int i = 0; i < numberofgun; i++) {
+			allGuns [i].adddamage (damage);
+		}
+	}
+	public int currentDamage(){
+		return allGuns[currentIndex].getdamage ();
+	}
 
 }
