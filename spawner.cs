@@ -4,51 +4,37 @@ using UnityEngine;
 
 public class spawner : MonoBehaviour {
 
-	public Wave[] waves;
-	public LivingEntity enemy;
+
+	public LivingEntity[] enemies;
 
 
-	int enemyRemainingToSpawn;
-	int enemyRemainingAlive;
-	float nextSpawnTime;
+	public int number;
+	int control;
 
-	Wave CurrentWave;
-	int currentWaveNumber;
 
-	void Start(){
-		NextWave ();
-
+	void start(){
+		control = number;
 	}
+
 
 	void Update(){
-		if (enemyRemainingToSpawn > 0 && Time.time > nextSpawnTime) {
-			enemyRemainingToSpawn--;
-			nextSpawnTime = Time.time + CurrentWave.timeBetweenSpawns;
-			LivingEntity spawnedEnemy = Instantiate (enemy, transform.position, Quaternion.identity) as LivingEntity;
-			spawnedEnemy.OnDeath += OnEnemyDeath;
-		}
-	}
-	void OnEnemyDeath(){
-		enemyRemainingAlive--;
-		if (enemyRemainingAlive == 0) {
-			NextWave ();
-		}
 		
 	}
-	void NextWave(){
-		currentWaveNumber++;
-		if (currentWaveNumber - 1 < waves.Length) {
-			CurrentWave = waves [currentWaveNumber - 1];
+	void OnTriggerEnter(Collider col){
+		if (col.CompareTag ("Player") ) {
+			
+			for(int i=0;i<number;i++){
+				int x = Random.Range (-3, 3);
+				int z = Random.Range (-3, 3);
+				int enemyindex = Random.Range (0, enemies.Length );
 
-			enemyRemainingToSpawn = CurrentWave.enemyCount;
-			enemyRemainingAlive = enemyRemainingToSpawn;
+				LivingEntity spawnedEnemy = Instantiate (enemies[enemyindex], transform.position + new Vector3(x,0,z), Quaternion.identity) as LivingEntity;
+				control--;
+			}
+				
 		}
+	}
 
 
-	}
-	[System.Serializable]
-	public class Wave{
-		public int enemyCount;
-		public float timeBetweenSpawns;
-	}
+
 }

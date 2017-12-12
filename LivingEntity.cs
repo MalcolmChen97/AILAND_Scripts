@@ -6,7 +6,7 @@ public class LivingEntity : MonoBehaviour,iDamagable{
 	public float startingHealth;
 	protected float health;
 	protected bool dead = false;
-	public event System.Action OnDeath;
+
 
 	public virtual void Start(){
 		health = startingHealth;
@@ -32,11 +32,16 @@ public class LivingEntity : MonoBehaviour,iDamagable{
 
 	public void Die(){
 		dead = true;
-		if (OnDeath != null) {
-			OnDeath ();
+
+		if (gameObject.name == "fakeplayer") {
+			
+			GameObject.Destroy (gameObject,10f);
+		} else {
+			GameObject.Destroy (gameObject);
 		}
 
-		GameObject.Destroy (gameObject);
+
+
 	}
 
 

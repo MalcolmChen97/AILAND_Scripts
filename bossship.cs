@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class bossship : LivingEntity {
 	public GameObject deathEffect;
-
+	public GameObject pickupgun;
 	public GameObject shootEffect;
 	public enum State{
 		Idle,Chasing,Attacking
@@ -43,10 +43,7 @@ public class bossship : LivingEntity {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.P)) {
-			startBattle ();
-
-		}
+		
 		if (hasTarget) {
 			transform.LookAt (target.position);
 			if (Time.time > nextAttackTime) {
@@ -67,7 +64,13 @@ public class bossship : LivingEntity {
 
 
 	}
+	void OnTriggerEnter (Collider col){
+		if (col.CompareTag ("Player") ) {
+			Debug.Log ("playerenter");
+			startBattle ();
+		}
 
+	}
 
 	IEnumerator shoot(){
 		
@@ -109,7 +112,7 @@ public class bossship : LivingEntity {
 
 		currentState = State.Chasing;
 		targetEntity = target.GetComponent<LivingEntity> ();
-		targetEntity.OnDeath += OnTargetDeath;
+
 		StartCoroutine (UpdatePath ());
 	}
 
@@ -124,6 +127,7 @@ public class bossship : LivingEntity {
 		if (damage >= health) {
 
 			Destroy(Instantiate (deathEffect,hitPoint,Quaternion.FromToRotation(Vector3.forward,hitDir)) as GameObject,2);
+			Instantiate (pickupgun, transform.position, Quaternion.identity);
 		}
 
 		base.TakeHit ( damage, hitPoint,hitDir);

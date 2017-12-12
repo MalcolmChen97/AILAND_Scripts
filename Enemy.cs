@@ -60,7 +60,7 @@ public class Enemy : LivingEntity {
 
 
 			targetEntity = target.GetComponent<LivingEntity> ();
-			targetEntity.OnDeath += OnTargetDeath;
+
 
 			//Subject To CHANGE!!!!!!!
 			myCollisionRadius = GetComponent<CapsuleCollider> ().radius;
@@ -135,7 +135,7 @@ public class Enemy : LivingEntity {
 
 
 	IEnumerator UpdatePath(){
-		float refreshRate = 0.25f;
+		float refreshRate = 0.75f;
 
 		while (hasTarget) {
 			if (currentState == State.Chasing) {

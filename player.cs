@@ -11,7 +11,7 @@ public class player : LivingEntity {
 	public Text healthtext;
 	public Text energytext;
 	public event System.Action OnDeath;
-
+	public GameObject gameoverUI;
 	public float initialSpeed=5;
 	public float moveSpeed = 5;
 	public float runSpeed = 15;
@@ -86,6 +86,8 @@ public class player : LivingEntity {
 		if (energy > 0) {
 			energy -= Time.deltaTime * 10;
 			moveSpeed = runSpeed;
+		} else {
+			moveSpeed = initialSpeed;
 		}
 	}
 
@@ -94,6 +96,9 @@ public class player : LivingEntity {
 		energybar.fillAmount = energy / 100;
 		healthtext.text = health + "/100";
 		energytext.text = energy + "/100";
+		if (health <= 0) {
+			gameoverUI.SetActive (true);
+		}
 	}
 
 	public void addhealth(int addhealth){

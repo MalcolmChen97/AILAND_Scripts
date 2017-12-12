@@ -20,7 +20,7 @@ public class robotboss : LivingEntity {
 	NavMeshAgent pathfinder;
 	Transform target;
 	Light harmlight;
-
+	public GameObject pickupgun;
 	float shootDistanceThreshold = 13;
 	float attackDistanceThreshold = 13;
 	float timebetweenAttcks = 4;
@@ -47,10 +47,7 @@ public class robotboss : LivingEntity {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.P)) {
-			startBattle ();
-
-		}
+		
 		if (hasTarget) {
 			if (Time.time > nextAttackTime) {
 				
@@ -150,10 +147,15 @@ public class robotboss : LivingEntity {
 		m_animater.SetBool ("run",true);
 		currentState = State.Chasing;
 		targetEntity = target.GetComponent<LivingEntity> ();
-		targetEntity.OnDeath += OnTargetDeath;
+	
 		StartCoroutine (UpdatePath ());
 	}
+	void OnTriggerEnter (Collider col){
+		if (col.CompareTag ("Player") ) {
+			startBattle ();
+		}
 
+	}
 
 	void OnTargetDeath(){
 		hasTarget = false;
@@ -163,7 +165,7 @@ public class robotboss : LivingEntity {
 	public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDir){
 
 		if (damage >= health) {
-
+			Instantiate (pickupgun, transform.position, Quaternion.identity);
 			Destroy(Instantiate (deathEffect,hitPoint,Quaternion.FromToRotation(Vector3.forward,hitDir)) as GameObject,2);
 		}
 

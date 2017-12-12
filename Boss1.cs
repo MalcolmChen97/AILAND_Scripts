@@ -50,7 +50,7 @@ public class Boss1 : LivingEntity {
 			harmlight = transform.GetComponentInChildren<Light>();
 			harmlight.enabled = false;
 			targetEntity = target.GetComponent<LivingEntity> ();
-			targetEntity.OnDeath += OnTargetDeath;
+
 
 		}
 			

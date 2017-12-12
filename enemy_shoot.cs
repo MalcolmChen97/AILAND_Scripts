@@ -61,7 +61,7 @@ public class enemy_shoot : LivingEntity {
 
 
 			targetEntity = target.GetComponent<LivingEntity> ();
-			targetEntity.OnDeath += OnTargetDeath;
+
 
 			//Subject To CHANGE!!!!!!!
 			myCollisionRadius = GetComponent<CapsuleCollider> ().radius;
@@ -117,6 +117,7 @@ public class enemy_shoot : LivingEntity {
 		for (int i=0;i<10;i++) {
 			yield return new WaitForSeconds (100f / 1000);
 			projectileSpawn.LookAt (attackPosition);
+			transform.LookAt (attackPosition);
 			Projectile newProjectile = Instantiate (projectile, projectileSpawn.position, projectileSpawn.rotation) as Projectile;
 			newProjectile.setSpeed (muzzleVelocity);;
 		
@@ -131,7 +132,7 @@ public class enemy_shoot : LivingEntity {
 
 
 	IEnumerator UpdatePath(){
-		float refreshRate = 0.25f;
+		float refreshRate = 0.2f;
 
 		while (hasTarget) {
 			if (currentState == State.Chasing) {

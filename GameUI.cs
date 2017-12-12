@@ -34,7 +34,7 @@ public class GameUI : MonoBehaviour {
 
 	//Ui input
 	public void StartNewGame(){
-		SceneManager.LoadScene("withTerrien");
+		SceneManager.LoadScene("playable");
 	}
 
 }

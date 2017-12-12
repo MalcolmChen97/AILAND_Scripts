@@ -10,7 +10,7 @@ public class stoneboss : LivingEntity {
 	public enum State{
 		Idle,Chasing,Attacking
 	}
-
+	public GameObject pickupgun;
 	public Projectile projectile;
 	public Transform projectileSpawn;
 	public float damge = 40;
@@ -42,13 +42,15 @@ public class stoneboss : LivingEntity {
 		target = GameObject.FindGameObjectWithTag ("Player").transform;
 		currentState = State.Idle;
 	}
-	
+	void OnTriggerEnter (Collider col){
+		if (col.CompareTag ("Player") ) {
+			startBattle ();
+		}
+
+	}
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.P)) {
-			startBattle ();
-			Debug.Log ("start");
-		}
+		
 		if (hasTarget) {
 			if (Time.time > nextAttackTime) {
 
@@ -137,7 +139,7 @@ public class stoneboss : LivingEntity {
 		m_animater.SetBool ("run",true);
 		currentState = State.Chasing;
 		targetEntity = target.GetComponent<LivingEntity> ();
-		targetEntity.OnDeath += OnTargetDeath;
+
 		StartCoroutine (UpdatePath ());
 	}
 
@@ -150,7 +152,7 @@ public class stoneboss : LivingEntity {
 	public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDir){
 
 		if (damage >= health) {
-
+			Instantiate (pickupgun, transform.position, Quaternion.identity);
 			Destroy(Instantiate (deathEffect,hitPoint,Quaternion.FromToRotation(Vector3.forward,hitDir)) as GameObject,2);
 		}
 
